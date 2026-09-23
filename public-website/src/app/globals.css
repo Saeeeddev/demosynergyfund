@@ -1,0 +1,161 @@
+@import 'tailwindcss';
+
+@theme {
+  /* ── Brand palette (public-website only) ─────────────────────────── */
+  --color-primary: #6d7f9f; /* main blue-grey */
+  --color-primary-deep: #56698a;
+  --color-primary-soft: #eef1f6;
+
+  --color-teal: #93afb1; /* secondary sage/teal */
+  --color-teal-deep: #6f9092;
+  --color-teal-soft: #eaf1f1;
+
+  --color-surface: #ffffff;
+  --color-surface-2: #f7f7f9; /* light canvas */
+  --color-line: #d0d0d1; /* hairline / border */
+  --color-line-soft: #e8e8ea;
+
+  --color-ink: #23272e;
+  --color-ink-2: #454b55;
+  --color-muted: #6b7280;
+  --color-subtle: #9aa1ac;
+
+  --color-green-base: #4f9d5b;
+  --color-green-deep: #2f7a3d;
+  --color-gold-base: #e0a92e;
+  --color-gold-deep: #b8850f;
+
+  /* ── Radii — Apple-ish soft geometry ─────────────────────────────── */
+  --radius-chip: 12px;
+  --radius-card: 20px;
+  --radius-xl: 28px;
+  --radius-hero: 34px;
+  --radius-pill: 999px;
+
+  /* ── Shadows ─────────────────────────────────────────────────────── */
+  --shadow-card: 0 10px 34px rgba(35, 39, 46, 0.06);
+  --shadow-card-hover: 0 18px 48px rgba(35, 39, 46, 0.1);
+  --shadow-pop: 0 20px 60px rgba(35, 39, 46, 0.12);
+  --shadow-nav: 0 8px 30px rgba(35, 39, 46, 0.08);
+
+  --ease-out-strong: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-strong: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+@theme inline {
+  --font-sans: var(--font-yekan), 'Yekan Bakh', Tahoma, Arial, sans-serif;
+}
+
+/* ── Universal horizontal frame ──────────────────────────────────────
+   Content maxes at 1250px and centers; on a 1920px screen that leaves
+   ~335px of gutter per side. The gutter shrinks with the viewport, then
+   the layout collapses to the small-screen stacked variant. */
+@utility wrap {
+  width: 100%;
+  max-width: 1250px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+@media (min-width: 640px) {
+  .wrap {
+    padding-inline: 28px;
+  }
+}
+@media (min-width: 1024px) {
+  .wrap {
+    padding-inline: 40px;
+  }
+}
+
+body {
+  /* Site-wide soft neutral canvas; the hero paints its own gradient on top */
+  background: linear-gradient(
+    135deg,
+    #f3f4f6 0%,
+    #ebedf0 16%,
+    #eef0f2 32%,
+    #f7f8f9 50%,
+    #f3f4f6 66%,
+    #ebedf0 84%,
+    #eceef1 100%
+  );
+  background-attachment: fixed;
+  color: var(--color-ink);
+  /* Persian script must never get letter-spacing — it breaks joining */
+  letter-spacing: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Entrance reveal — plays once on first paint via @starting-style ── */
+.rise {
+  opacity: 1;
+  transform: translateY(0);
+  filter: blur(0);
+  transition:
+    opacity 700ms var(--ease-out-strong),
+    transform 700ms var(--ease-out-strong),
+    filter 700ms var(--ease-out-strong);
+  transition-delay: var(--rise-delay, 0ms);
+}
+
+@starting-style {
+  .rise {
+    opacity: 0;
+    transform: translateY(16px);
+    filter: blur(4px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rise {
+    transition: opacity 300ms ease;
+    transition-delay: 0ms;
+    transform: none !important;
+    filter: none !important;
+  }
+}
+
+/* ── Cookie consent slide-up ── */
+.cookie-rise {
+  animation: cookie-rise 420ms var(--ease-out-strong) both;
+}
+@keyframes cookie-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cookie-rise {
+    animation: none;
+    transform: none;
+  }
+}
+
+/* ── Hero slide timer — active bar fills right→left (RTL) over the slide duration ── */
+.hero-timer-fill {
+  transform-origin: right center;
+  animation-name: hero-timer;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+@keyframes hero-timer {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-timer-fill {
+    animation: none;
+    transform: scaleX(1);
+  }
+}

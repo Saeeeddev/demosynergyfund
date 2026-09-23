@@ -1,0 +1,4 @@
+Synergy Fund — Portfolio Demo
+
+This is a sample downloadable report for the interactive portfolio demonstration.
+It contains no real customer, investment, financial, or operational information.

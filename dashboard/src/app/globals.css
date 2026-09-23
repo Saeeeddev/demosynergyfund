@@ -1,0 +1,190 @@
+/* ============================================================
+   globals.css
+   Import order: tailwindcss → design tokens → theme mapping
+   ============================================================ */
+
+@import "tailwindcss";
+@import "../styles/design-tokens.css";
+
+/* ------------------------------------------------------------
+   @theme — maps design CSS variables to Tailwind utility classes
+   Tailwind v4 CSS-first config: no tailwind.config.ts needed.
+
+   Convention: ALWAYS use logical-direction utilities in components:
+     ps-* / pe-* / ms-* / me-* / start-* / end-* / text-start
+   NEVER use pl- / pr- / ml- / mr- / left-* / right-* (MOBILE.md §12)
+   ------------------------------------------------------------ */
+
+@theme {
+  /* Surfaces & neutrals */
+  --color-bg:            var(--bg);
+  --color-surface:       var(--surface);
+  --color-surface-2:     var(--surface-2);
+  --color-border:        var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-hover:         var(--hover);
+
+  /* Text */
+  --color-text:          var(--text);
+  --color-text-2:        var(--text-2);
+  --color-text-muted:    var(--text-muted);
+  --color-text-subtle:   var(--text-subtle);
+
+  /* Green family */
+  --color-green-deep:  var(--green-deep);
+  --color-green-base:  var(--green-base);
+  --color-green-soft:  var(--green-soft);
+  --color-green-tint:  var(--green-tint);
+
+  /* Blue family */
+  --color-blue-deep:   var(--blue-deep);
+  --color-blue-base:   var(--blue-base);
+  --color-blue-soft:   var(--blue-soft);
+  --color-blue-tint:   var(--blue-tint);
+
+  /* Red family */
+  --color-red-deep:    var(--red-deep);
+  --color-red-base:    var(--red-base);
+  --color-red-soft:    var(--red-soft);
+  --color-red-tint:    var(--red-tint);
+
+  /* Gold family */
+  --color-gold-deep:   var(--gold-deep);
+  --color-gold-base:   var(--gold-base);
+  --color-gold-soft:   var(--gold-soft);
+  --color-gold-tint:   var(--gold-tint);
+
+  /* Purple family */
+  --color-purple-deep: var(--purple-deep);
+  --color-purple-base: var(--purple-base);
+  --color-purple-soft: var(--purple-soft);
+  --color-purple-tint: var(--purple-tint);
+
+  /* Gray family */
+  --color-gray-deep:   var(--gray-deep);
+  --color-gray-base:   var(--gray-base);
+  --color-gray-soft:   var(--gray-soft);
+  --color-gray-tint:   var(--gray-tint);
+
+  /* Black family */
+  --color-black-deep:  var(--black-deep);
+  --color-black-base:  var(--black-base);
+  --color-black-soft:  var(--black-soft);
+  --color-black-tint:  var(--black-tint);
+
+  /* Semantic roles */
+  --color-positive:      var(--positive);
+  --color-positive-tint: var(--positive-tint);
+  --color-negative:      var(--negative);
+  --color-negative-tint: var(--negative-tint);
+  --color-info:          var(--info);
+  --color-info-tint:     var(--info-tint);
+  --color-energy:        var(--energy);
+  --color-energy-tint:   var(--energy-tint);
+  --color-special:       var(--special);
+  --color-special-tint:  var(--special-tint);
+
+  /* Sidebar */
+  --color-sidebar-bg:        var(--sidebar-bg);
+  --color-sidebar-active:    var(--sidebar-active);
+  --color-sidebar-active-fg: var(--sidebar-active-fg);
+
+  /* Radius — mapped to Tailwind's --radius-* namespace */
+  --radius-main: var(--r-main);
+  --radius-card: var(--r-card);
+  --radius-md:   var(--r-md);
+  --radius-chip: var(--r-chip);
+  --radius-pill: var(--r-pill);
+
+  /* Font */
+  --font-sans: var(--font);
+}
+
+/* ------------------------------------------------------------
+   Helper classes (MOBILE.md §10, §5.1, §12)
+   ------------------------------------------------------------ */
+
+/* Content box: asas-style soft canvas — white cards float on a light gray field.
+   (Inverted from the original white sheet so the asas "cards on canvas" look reads.) */
+.content-box {
+  background: var(--bg);
+  border-radius: 0;
+  margin: 0;
+  /* Thin custom scrollbar — transparent track, no arrows (asas lavender thumb) */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(176,163,212,0.45) transparent;
+}
+@media (min-width: 768px) {
+  .content-box {
+    /* Framed content area floating on the colored shell background.
+       The content area keeps its --bg canvas; only the surrounding shell changes. */
+    margin: 10px;
+    margin-bottom: 0;
+    border-radius: var(--r-main) var(--r-main) 0 0;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    /* Inset content from the scrollbar edge (scrollbar is on left in RTL) */
+    padding-inline-end: 4px;
+  }
+}
+
+/* WebKit scrollbar — transparent track, thin thumb, no up/down buttons */
+.content-box::-webkit-scrollbar {
+  width: 5px;
+}
+.content-box::-webkit-scrollbar-track {
+  background: transparent;
+  /* Vertical margin so scrollbar doesn't cover the corner border-radius */
+  margin-block: 14px;
+}
+.content-box::-webkit-scrollbar-thumb {
+  background: rgba(176,163,212,0.35);
+  border-radius: 999px;
+}
+.content-box::-webkit-scrollbar-thumb:hover {
+  background: rgba(109,127,159,0.55);
+}
+.content-box::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+/* Legacy alias — kept for any markup that still uses .app-main */
+.app-main {
+  background: var(--surface);
+}
+
+/* Sidebar pane — sticky, thin scrollbar when items overflow */
+.sidebar-pane {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(176,163,212,0.4) transparent;
+}
+.sidebar-pane::-webkit-scrollbar {
+  width: 4px;
+}
+.sidebar-pane::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-pane::-webkit-scrollbar-thumb {
+  background: rgba(176,163,212,0.3);
+  border-radius: 999px;
+}
+.sidebar-pane::-webkit-scrollbar-button {
+  display: none;
+  height: 0;
+  width: 0;
+}
+
+/* Safe-area aware pinned elements (MOBILE.md §10) */
+.bottom-nav {
+  padding-block-end: calc(8px + env(safe-area-inset-bottom));
+}
+
+.sticky-cta {
+  padding-block-end: calc(12px + env(safe-area-inset-bottom));
+}
+
+.mobile-header {
+  padding-block-start: env(safe-area-inset-top);
+}
