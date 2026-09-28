@@ -147,6 +147,7 @@ export function CumulativeRoiChart({ yearlyData, investedAmount, height = 280 }:
       },
       legend: { enabled: false },
       credits: { enabled: false },
+      accessibility: { enabled: false },
       responsive: {
         rules: [{
           condition: { maxWidth: 768 },

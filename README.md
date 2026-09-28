@@ -1,5 +1,7 @@
 # Synergy Fund portfolio demo
 
+For the complete deployment procedure, including GitHub, Cloudflare Pages, DNS, custom domains, and VPS shutdown, use [CLOUDFLARE_DEPLOYMENT.md](CLOUDFLARE_DEPLOYMENT.md). This README is a quick reference.
+
 This repository contains only the two frontends intended for Cloudflare Pages:
 
 | Cloudflare Pages project | Root directory | Final address |

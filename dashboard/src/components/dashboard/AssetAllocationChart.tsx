@@ -95,7 +95,7 @@ export function AssetAllocationChart({ data, isLoading, isError, onRetry }: Asse
                 <span className="flex items-center gap-3">
                   {totalWatts > 0 && (
                     <span className="text-text-muted tabular-nums">
-                      {bidiIsolate(formatNumber(totalWatts / 1000, 0))} کیلووات
+                      {bidiIsolate(formatNumber(totalWatts, 0))} کیلووات
                     </span>
                   )}
                   <span className="text-text tabular-nums">{formatTomanCompact(total)}</span>
