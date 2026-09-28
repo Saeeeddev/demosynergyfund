@@ -1,15 +1,26 @@
-import { Wrench } from 'lucide-react';
+'use client';
+
+import { useState } from 'react';
+import { Mail } from 'lucide-react';
 
 export default function ContactForm() {
+  const [showNotice, setShowNotice] = useState(false);
+
   return (
-    <div className="mt-6 rounded-card border border-amber-200 bg-amber-50 px-6 py-8 text-center">
-      <span className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-amber-100 text-amber-700">
-        <Wrench size={24} aria-hidden="true" />
-      </span>
-      <p className="mt-4 text-base font-bold text-ink">فرم تماس موقتاً غیرفعال است</p>
-      <p className="mx-auto mt-2 max-w-lg text-sm leading-7 text-muted">
-        این وب‌سایت به‌عنوان نمونه‌کار منتشر شده و سرویس پشتیبانی اصلی در حال نگهداری است. لطفاً هیچ اطلاعات شخصی یا مالی وارد نکنید.
-      </p>
+    <div className="mt-6 flex flex-col items-center gap-4 text-center">
+      <button
+        type="button"
+        onClick={() => setShowNotice(true)}
+        className="inline-flex min-h-12 items-center justify-center gap-2 rounded-pill bg-primary px-8 text-[15px] font-medium text-white transition-[transform,background-color] duration-200 ease-out hover:bg-primary-deep active:scale-[0.98]"
+      >
+        <Mail size={18} aria-hidden="true" />
+        ارسال پیام
+      </button>
+      {showNotice && (
+        <p role="status" className="w-full rounded-card border border-amber-200 bg-amber-50 px-5 py-4 text-sm leading-7 text-amber-900">
+          ارسال پیام در حال حاضر فعال نیست. لطفاً بعداً دوباره تلاش کنید.
+        </p>
+      )}
     </div>
   );
 }

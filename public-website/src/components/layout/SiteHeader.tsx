@@ -83,7 +83,7 @@ export default function SiteHeader() {
           logo="/Images/synergyfundlogotransparent.webp"
           logoAlt="سینرژی"
           items={NAV_ITEMS}
-          ctaLabel="مشاهده دمو"
+          ctaLabel="ورود به پلتفرم"
           ctaHref={PLATFORM_URL}
           baseColor="#ffffff"
           menuColor="#23272e"

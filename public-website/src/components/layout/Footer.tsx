@@ -8,7 +8,7 @@ const COLUMNS: { title: string; links: { label: string; href: string }[] }[] = [
     links: [
       { label: 'فرصت‌های سرمایه‌گذاری', href: '/#opportunities' },
       { label: 'نیروگاه‌های فعال', href: '/#opportunities' },
-      { label: 'چطور کار می‌کند', href: '/#how' },
+      { label: 'از کجا شروع کنم', href: '/#how' },
       { label: 'خرید و فروش سهم', href: '/#how' },
     ],
   },

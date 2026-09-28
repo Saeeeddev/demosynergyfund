@@ -6,7 +6,7 @@ export default function Home() {
       <div className="max-w-md rounded-card border border-border bg-surface p-8 text-center shadow-[var(--shadow-card)]">
         <h1 className="text-xl font-bold text-text">نسخه نمایشی سینرژی فاند</h1>
         <p className="mt-3 text-sm leading-7 text-text-muted">
-          این نسخه فقط برای نمایش نمونه‌کار است و از اطلاعات آزمایشی استفاده می‌کند.
+          این داشبورد در حالت دمو اجرا می‌شود و از اطلاعات آزمایشی استفاده می‌کند.
         </p>
         <Link
           href="/dashboard"
