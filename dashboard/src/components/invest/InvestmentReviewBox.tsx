@@ -83,7 +83,7 @@ export function InvestmentReviewBox({
             label={
               <span>
                 قوانین و مقررات{' '}
-                <CheckboxLink href="/rules">پلتفرم سینرجی</CheckboxLink>
+                <CheckboxLink href="/rules">پلتفرم سینرژی</CheckboxLink>
                 {' '}را خوانده و می‌پذیرم
               </span>
             }
