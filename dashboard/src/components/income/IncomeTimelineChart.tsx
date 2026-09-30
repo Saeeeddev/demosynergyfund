@@ -8,7 +8,7 @@ import { Banknote } from 'lucide-react'
 import { MonthlyBarChart, type MonthlyBarDatum } from '@/components/charts/MonthlyBarChart'
 import { Card } from '@/components/ui/Card'
 import { SectionTitle } from '@/components/ui/SectionTitle'
-import { formatTomanCompact } from '@/lib/utils/currency'
+import { formatToman, formatTomanCompact } from '@/lib/utils/currency'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { ErrorState } from '@/components/ui/ErrorState'
 import { Empty } from '@/components/ui/Empty'
@@ -48,7 +48,7 @@ export function IncomeTimelineChart({
           message="هنوز درآمدی ثبت نشده است"
         />
       ) : (
-        <MonthlyBarChart data={data} height={240} valueFormatter={formatTomanCompact} barSize="fat" rotateLabels />
+        <MonthlyBarChart data={data} height={240} valueFormatter={formatTomanCompact} tooltipValueFormatter={formatToman} tooltipLabel="درآمد دریافتی" barSize="fat" rotateLabels />
       )}
     </Card>
   )

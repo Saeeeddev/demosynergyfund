@@ -60,7 +60,7 @@ export function InvestmentCalculator({ project, kw, onKwChange }: InvestmentCalc
             value={numKw === 0 ? '' : toPersianDigits(String(numKw))}
             onChange={(e) => setVal(parseInt(onlyDigits(e.target.value), 10) || 0)}
             placeholder="۱"
-            className="flex-1 h-12 md:h-11 rounded-md border border-border-strong bg-surface text-center text-[18px] font-bold text-text tabular-nums focus:outline-none focus:ring-2 focus:ring-green-tint focus:border-green-base"
+            className="min-w-0 flex-1 h-12 md:h-11 rounded-md border border-border-strong bg-surface text-center text-[18px] font-bold text-text tabular-nums focus:outline-none focus:ring-2 focus:ring-green-tint focus:border-green-base"
           />
           <StepBtn ariaLabel="افزایش" disabled={numKw >= maxKw} onClick={() => setVal(numKw + 1)}>
             <Plus size={18} />

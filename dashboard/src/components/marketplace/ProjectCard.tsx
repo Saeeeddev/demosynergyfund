@@ -68,7 +68,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
     <div
       className={cn(
         // asas card: white, rounded, soft card shadow, hairline border, lift on hover
-        'group bg-surface rounded-card border border-border overflow-hidden flex flex-col',
+        'group min-w-0 bg-surface rounded-card border border-border overflow-hidden flex flex-col',
         'shadow-[var(--shadow-card)]',
         'transition-[box-shadow,transform] duration-200 ease-out motion-reduce:transition-none',
         'hover:shadow-[var(--shadow-card-hover)] hover:-translate-y-0.5',
@@ -114,7 +114,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
       </div>
 
       {/* ── Card content ── */}
-      <div className="flex flex-col gap-3.5 p-4 flex-1">
+      <div className="flex min-w-0 flex-col gap-3.5 p-4 flex-1">
         {/* Title */}
         <h3 className="text-[17px] font-semibold text-text leading-snug line-clamp-1">
           {project.name}
@@ -177,7 +177,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
         )}
 
         {/* 2×2 key metrics — share-buying details */}
-        <div className="grid grid-cols-2 gap-x-3 gap-y-3 pt-1">
+        <div className="grid min-w-0 grid-cols-2 gap-x-3 gap-y-3 pt-1">
           <Metric label="قیمت هر کیلووات" value={formatToman(pricePerKw)} />
           <Metric label="حداقل سرمایه" value={formatToman(project.minInvestment)} />
           <Metric label="ظرفیت کل (مگاوات)" value={bidiIsolate(formatNumber(capacityMw, 1))} />
@@ -185,7 +185,7 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
         </div>
 
         {/* Footer action bar (asas) — NavButton shows a spinner during navigation */}
-        <div className="-mx-4 -mb-4 mt-auto border-t border-border bg-surface-2 px-4 py-3 flex items-center gap-2">
+        <div className="-mx-4 -mb-4 mt-auto border-t border-border bg-surface-2 px-4 py-3 flex flex-wrap items-center gap-2">
           <NavButton
             href={`/project-details/${project.id}`}
             variant="ghost"
@@ -206,9 +206,9 @@ export function ProjectCard({ project, className }: ProjectCardProps) {
 
 function Metric({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex flex-col gap-0.5">
+    <div className="flex min-w-0 flex-col gap-0.5">
       <span className="text-[11px] text-text-muted leading-tight">{label}</span>
-      <span className="text-[13px] font-semibold text-text tabular-nums leading-tight">{value}</span>
+      <span className="break-words text-[13px] font-semibold text-text tabular-nums leading-tight">{value}</span>
     </div>
   )
 }

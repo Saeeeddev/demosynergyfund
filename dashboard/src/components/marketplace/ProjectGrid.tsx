@@ -17,6 +17,9 @@ import { useProjects, useProjectsInfinite } from '@/lib/hooks/useProjects'
 import type { SortOption, CategoryFilter } from './MarketplaceFilter'
 import type { Project } from '@/types/domain'
 
+// Fit as many cards as the content column can actually hold beside the sidebar.
+const projectGridStyle = { gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 18rem), 1fr))' }
+
 interface ProjectGridProps {
   category: CategoryFilter
   sort: SortOption
@@ -60,7 +63,7 @@ export function ProjectGrid({ category, sort }: ProjectGridProps) {
       <div className="hidden md:block">
         {/* First page loading: standard skeleton */}
         {desktopQ.isLoading && page === 1 && (
-          <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="grid gap-4" style={projectGridStyle}>
             <Skeleton className="h-80 rounded-card" count={8} />
           </div>
         )}
@@ -76,7 +79,7 @@ export function ProjectGrid({ category, sort }: ProjectGridProps) {
             <div className="relative">
               {/* In-box loading overlay for page 2+ [D §9.22] */}
               {desktopQ.isFetching && page > 1 && (
-                <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
+                <div className="grid gap-4" style={projectGridStyle}>
                   <Skeleton className="h-80 rounded-card" count={8} />
                 </div>
               )}
@@ -99,7 +102,7 @@ export function ProjectGrid({ category, sort }: ProjectGridProps) {
                     message="پروژه‌ای با این فیلتر یافت نشد"
                   />
                 ) : (
-                  <div className="grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-4">
+                  <div className="grid gap-4" style={projectGridStyle}>
                     {desktopFiltered.map((project) => (
                       <ProjectCard key={project.id} project={project} />
                     ))}

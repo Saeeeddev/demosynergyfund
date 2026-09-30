@@ -24,7 +24,7 @@ export function SearchField({ className, placeholder = 'جستجو…', ...props
         placeholder={placeholder}
         className={cn(
           'w-full',
-          'bg-surface-2 border border-border rounded-pill',
+          'bg-surface-2 border border-border rounded-[12px]',
           // Icon on start → pad start by icon width + gap; pad end normally
           'h-10 ps-10 pe-4',
           // Mobile: ≥16px prevents iOS auto-zoom [M §10]

@@ -8,7 +8,7 @@ import { TrendingUp } from 'lucide-react'
 import { MonthlyBarChart, type MonthlyBarDatum } from '@/components/charts/MonthlyBarChart'
 import { Card } from '@/components/ui/Card'
 import { SectionTitle } from '@/components/ui/SectionTitle'
-import { formatTomanCompact } from '@/lib/utils/currency'
+import { formatToman, formatTomanCompact } from '@/lib/utils/currency'
 import { formatJalaliMonth } from '@/lib/utils/jalali'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { ErrorState } from '@/components/ui/ErrorState'
@@ -44,7 +44,7 @@ export function PerformanceChart({ series, isLoading, isError, onRetry }: Perfor
           message="هنوز سرمایه‌گذاری‌ای ندارید — اولین پروژه را انتخاب کنید"
         />
       ) : (
-        <MonthlyBarChart data={data} height={240} valueFormatter={formatTomanCompact} rotateLabels />
+        <MonthlyBarChart data={data} height={240} valueFormatter={formatTomanCompact} tooltipValueFormatter={formatToman} tooltipLabel="ارزش سبد" rotateLabels />
       )}
     </Card>
   )

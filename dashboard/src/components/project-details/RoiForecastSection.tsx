@@ -12,7 +12,6 @@ import { Clock } from 'lucide-react'
 import { ForecastSummaryCards } from './ForecastSummaryCards'
 import { CumulativeRoiChart } from './CumulativeRoiChart'
 import { AssumptionsPanel } from './AssumptionsPanel'
-import { Card } from '@/components/ui/Card'
 import { formatNumber, onlyDigits } from '@/lib/utils/numbers'
 import type { ForecastScenario, ForecastYearData, RoiForecastResult } from '@/types/domain'
 import type { ProjectWithDetails } from '@/lib/schemas/project'
@@ -112,20 +111,12 @@ export function RoiForecastSection({ project, kw }: RoiForecastSectionProps) {
   )
 
   return (
-    <div className="flex flex-col gap-5">
-      {/* Section title */}
-      <div>
-        <h2 className="text-[17px] font-semibold text-text">پیش‌بینی اقتصادی و ROI</h2>
-        <p className="text-[13px] text-text-muted mt-1">
-          بازده تخمینی در افق {formatNumber(forecast.horizonYears)} ساله بر اساس مبلغ واردشده در ماشین‌حساب
-        </p>
-      </div>
-
+    <div className="flex min-w-0 flex-col gap-5">
       {/* 3 summary cards — live (payback shown as a note below, not a card) */}
       <ForecastSummaryCards result={result} />
 
       {/* Payback period — shown as a contextual note instead of a hard number card */}
-      <div className="flex items-start gap-3 rounded-md bg-blue-tint border border-blue-base/20 px-4 py-3">
+      <div className="flex items-start gap-3 rounded-md bg-surface border border-blue-base/20 px-4 py-3">
         <Clock size={18} className="text-blue-deep shrink-0 mt-0.5" />
         <p className="text-[13px] text-text-2 leading-relaxed">
           دوره بازگشت سرمایه در شرایط فعلی بازار
@@ -138,18 +129,16 @@ export function RoiForecastSection({ project, kw }: RoiForecastSectionProps) {
       </div>
 
       {/* Assumptions & methodology — moved up, above the charts [F §11] */}
-      <AssumptionsPanel assumptions={forecast} />
+      <AssumptionsPanel assumptions={forecast} targetYieldPercent={project.targetYield} />
 
       {/* Chart — cumulative cash flow over time */}
-      <div className="flex flex-col gap-4">
-        <Card className="p-4">
-          <h3 className="text-[14px] font-semibold text-text mb-4">جریان نقدینگی تجمیعی</h3>
+      <div className="flex flex-col gap-4 rounded-card border border-border bg-surface p-4 sm:p-5">
+          <h3 className="text-[14px] font-semibold text-text">جریان نقدینگی تجمیعی</h3>
           <CumulativeRoiChart
             yearlyData={yearlyData}
             investedAmount={investedAmount || project.minInvestment}
             height={300}
           />
-        </Card>
       </div>
     </div>
   )

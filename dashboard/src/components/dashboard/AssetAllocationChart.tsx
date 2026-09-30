@@ -41,7 +41,7 @@ export function AssetAllocationChart({ data, isLoading, isError, onRetry }: Asse
   const isEmpty = !isLoading && !isError && data.length === 0
 
   return (
-    <Card className="flex flex-col gap-5 h-full">
+    <Card className="@container flex flex-col gap-5 h-full min-w-0">
       <SectionTitle title="ترکیب دارایی" subtitle="توزیع سرمایه‌گذاری بین پروژه‌ها" />
 
       {isEmpty ? (
@@ -50,9 +50,9 @@ export function AssetAllocationChart({ data, isLoading, isError, onRetry }: Asse
           message="هنوز سرمایه‌گذاری‌ای ندارید — اولین پروژه را انتخاب کنید"
         />
       ) : (
-        <div className="flex flex-col gap-5 lg:flex-row lg:items-center">
+        <div className="flex min-w-0 flex-col gap-5 @2xl:flex-row @2xl:items-center">
           {/* Donut (legend rendered separately, asas style) */}
-          <div className="lg:flex-1">
+          <div className="min-w-0 @2xl:flex-1">
             <DonutChart
               data={donutData}
               showLegend={false}
@@ -65,16 +65,16 @@ export function AssetAllocationChart({ data, isLoading, isError, onRetry }: Asse
 
           {/* Legend list — swatch · name · value · % */}
           {!isLoading && !isError && (
-            <div className="lg:flex-1 flex flex-col gap-2">
+            <div className="min-w-0 @2xl:flex-1 flex flex-col gap-2">
               {data.map((slice, i) => {
                 const pct = total > 0 ? (slice.value / total) * 100 : 0
                 return (
-                  <div key={slice.name} className="flex items-center gap-2 text-[13px]">
+                  <div key={slice.name} className="flex min-w-0 flex-wrap items-center gap-2 text-[13px]">
                     <span
                       className="w-3 h-3 rounded-sm shrink-0"
                       style={{ backgroundColor: CATEGORICAL_COLORS[i % CATEGORICAL_COLORS.length] }}
                     />
-                    <span className="flex-1 text-text truncate">{slice.name}</span>
+                    <span className="min-w-0 flex-1 text-text truncate">{slice.name}</span>
                     {slice.watts != null && (
                       <span className="text-text-muted tabular-nums whitespace-nowrap">
                         {bidiIsolate(formatNumber(slice.watts, 0))} کیلووات
@@ -90,9 +90,9 @@ export function AssetAllocationChart({ data, isLoading, isError, onRetry }: Asse
                 )
               })}
 
-              <div className="flex items-center justify-between border-t border-border mt-2 pt-3 text-[13px] font-semibold">
+              <div className="flex flex-wrap items-center justify-between gap-2 border-t border-border mt-2 pt-3 text-[13px] font-semibold">
                 <span className="text-text">مجموع سرمایه</span>
-                <span className="flex items-center gap-3">
+                <span className="flex flex-wrap items-center gap-3">
                   {totalWatts > 0 && (
                     <span className="text-text-muted tabular-nums">
                       {bidiIsolate(formatNumber(totalWatts, 0))} کیلووات

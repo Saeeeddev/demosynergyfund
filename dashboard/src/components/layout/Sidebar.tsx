@@ -78,7 +78,7 @@ export function SidebarNav({ pathname, onNavigate }: SidebarNavProps) {
             href={href}
             onClick={onNavigate}
             className={cn(
-              'flex items-center gap-3 px-3 py-3 rounded-[28px] text-[15px] font-medium',
+              'flex items-center gap-3 px-3 py-3 rounded-[16px] text-[15px] font-medium',
               'transition-colors duration-[120ms] ease-out motion-reduce:transition-none',
               'min-h-[44px]',
               isActive
@@ -341,7 +341,7 @@ function SidebarBottom() {
           aria-label="اعلان‌ها"
           aria-expanded={notifOpen}
           className={cn(
-            'flex items-center gap-3 w-full px-3 py-3 rounded-[28px] text-[13px] font-medium',
+            'flex items-center gap-3 w-full px-3 py-3 rounded-[16px] text-[13px] font-medium',
             'transition-colors duration-[120ms] ease-out min-h-[44px]',
             notifOpen
               ? 'bg-blue-tint text-text'
@@ -379,7 +379,7 @@ function SidebarBottom() {
           aria-expanded={profileOpen}
           aria-haspopup="true"
           className={cn(
-            'flex items-center gap-3 w-full px-3 py-3 rounded-[28px] text-[13px] font-medium',
+            'flex items-center gap-3 w-full px-3 py-3 rounded-[16px] text-[13px] font-medium',
             'transition-colors duration-[120ms] ease-out min-h-[44px]',
             profileOpen
               ? 'bg-blue-tint text-text'

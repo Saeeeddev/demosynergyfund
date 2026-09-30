@@ -4,12 +4,13 @@
 // Break-even marker where cumulative payouts pass original investment
 // [M §8] Mobile: ~220px height, tap tooltips, RTL time axis
 
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState, useMemo, useSyncExternalStore } from 'react'
 import { Skeleton } from '@/components/ui/Skeleton'
 import { CHART_COLORS, CHART_FONT } from '@/lib/utils/highchartsBase'
-import { formatCompact } from '@/lib/utils/numbers'
+import { formatCompact, formatNumber } from '@/lib/utils/numbers'
 import { formatTomanCompact } from '@/lib/utils/currency'
 import type { ForecastYearData } from '@/types/domain'
+import { breakEvenPosition } from './breakEvenPosition'
 
 interface CumulativeRoiChartProps {
   yearlyData: ForecastYearData[]
@@ -17,18 +18,20 @@ interface CumulativeRoiChartProps {
   height?: number
 }
 
+function subscribeReducedMotion(onChange: () => void) {
+  const query = window.matchMedia('(prefers-reduced-motion: reduce)')
+  query.addEventListener('change', onChange)
+  return () => query.removeEventListener('change', onChange)
+}
+
+function getReducedMotion() {
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
+}
+
 export function CumulativeRoiChart({ yearlyData, investedAmount, height = 280 }: CumulativeRoiChartProps) {
   const [HighchartsReact, setHighchartsReact] = useState<React.ComponentType<Record<string, unknown>> | null>(null)
   const [Highcharts, setHighcharts] = useState<unknown>(null)
-  const [reducedMotion, setReducedMotion] = useState(false)
-
-  useEffect(() => {
-    const mq = window.matchMedia('(prefers-reduced-motion: reduce)')
-    setReducedMotion(mq.matches)
-    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
-    mq.addEventListener('change', handler)
-    return () => mq.removeEventListener('change', handler)
-  }, [])
+  const reducedMotion = useSyncExternalStore(subscribeReducedMotion, getReducedMotion, () => false)
 
   useEffect(() => {
     Promise.all([import('highcharts'), import('highcharts-react-official')]).then(
@@ -43,22 +46,16 @@ export function CumulativeRoiChart({ yearlyData, investedAmount, height = 280 }:
     )
   }, [])
 
-  // Find break-even year
-  const breakEvenYear = useMemo(() => {
-    if (investedAmount <= 0) return null
-    const idx = yearlyData.findIndex((d) => d.cumulativeReturn >= investedAmount)
-    return idx >= 0 ? yearlyData[idx].year : null
-  }, [yearlyData, investedAmount])
-
   const options = useMemo(() => {
-    const categories = yearlyData.map((d) => String(d.year))
-    const data = yearlyData.map((d) => d.cumulativeReturn)
+    const years = yearlyData.map((d) => d.year)
+    const data = yearlyData.map((d) => ({ x: d.year, y: d.cumulativeReturn }))
+    const crossing = breakEvenPosition(yearlyData, investedAmount)
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const plotLines: any[] = []
-    if (breakEvenYear !== null) {
+    if (crossing !== null) {
       plotLines.push({
-        value: categories.indexOf(String(breakEvenYear)),
+        value: crossing,
         color: CHART_COLORS.green,
         dashStyle: 'Dash',
         width: 2,
@@ -82,11 +79,13 @@ export function CumulativeRoiChart({ yearlyData, investedAmount, height = 280 }:
       },
       title: { text: '' },
       xAxis: {
-        categories,
+        type: 'linear',
+        min: years[0],
+        max: years[years.length - 1],
+        tickPositions: years,
         reversed: false, // LTR: year 1 on the left → latest on the right
         lineColor: 'transparent',
         tickColor: 'transparent',
-        // step:1 → never skip a year label (fixes hidden dates)
         labels: { step: 1, style: { color: CHART_COLORS.textSubtle, fontSize: '11px', fontFamily: CHART_FONT } },
         plotLines,
       },
@@ -137,12 +136,11 @@ export function CumulativeRoiChart({ yearlyData, investedAmount, height = 280 }:
         style: { color: CHART_COLORS.text, fontFamily: CHART_FONT, fontSize: '13px' },
         stickyTracking: false,
         followTouchMove: true,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         formatter(): string {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           const self = this as any
           const v = self.y as number
-          return `<b>سال ${self.x}</b><br/>بازده: ${formatTomanCompact(v)}`
+          return `<b>سال ${formatNumber(self.x)}</b><br/>بازده: ${formatTomanCompact(v)}`
         },
       },
       legend: { enabled: false },
@@ -151,11 +149,11 @@ export function CumulativeRoiChart({ yearlyData, investedAmount, height = 280 }:
       responsive: {
         rules: [{
           condition: { maxWidth: 768 },
-          chartOptions: { chart: { height: 220 } },
+          chartOptions: { chart: { height: 220 }, xAxis: { labels: { step: 4 } } },
         }],
       },
     }
-  }, [yearlyData, investedAmount, breakEvenYear, reducedMotion, height])
+  }, [yearlyData, investedAmount, reducedMotion, height])
 
   if (!HighchartsReact || !Highcharts) {
     return (

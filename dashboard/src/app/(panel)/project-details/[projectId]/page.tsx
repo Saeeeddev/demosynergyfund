@@ -17,6 +17,8 @@ import { RoiForecastSection } from '@/components/project-details/RoiForecastSect
 import { Skeleton } from '@/components/ui/Skeleton'
 import { ErrorState } from '@/components/ui/ErrorState'
 import { BackButton } from '@/components/ui/BackButton'
+import { Card } from '@/components/ui/Card'
+import { formatNumber } from '@/lib/utils/numbers'
 
 interface ProjectPageProps {
   params: Promise<{ projectId: string }>
@@ -89,15 +91,23 @@ export default function ProjectPage({ params }: ProjectPageProps) {
         
       </div>
 
-      {/* Row 2 — calculator (right, sticky) + ROI forecast (left, bigger) */}
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-4 lg:gap-5 lg:items-start">
-        <div className="order-first lg:order-none lg:col-span-1 lg:sticky lg:top-3">
-          <InvestmentCalculator project={project} kw={kw} onKwChange={setKw} />
+      {/* Forecast card — the calculator and forecast share one section. */}
+      <Card className="flex min-w-0 flex-col gap-5 bg-surface-2 p-4 sm:p-6">
+        <div className="border-b border-border-strong pb-4 text-right">
+          <h2 className="text-[17px] font-semibold text-text">پیش‌بینی اقتصادی و ROI</h2>
+          <p className="text-[13px] text-text-2 mt-1">
+            بازده تخمینی در افق {formatNumber(project.details.forecast.horizonYears)} ساله بر اساس مبلغ واردشده در ماشین‌حساب
+          </p>
         </div>
-        <div className="lg:col-span-3">
-          <RoiForecastSection project={project} kw={debouncedKw} />
+        <div className="flex flex-col gap-5 lg:grid lg:grid-cols-4 lg:items-start">
+          <div className="min-w-0 lg:col-span-1 lg:sticky lg:top-5 lg:mt-5">
+            <InvestmentCalculator project={project} kw={kw} onKwChange={setKw} />
+          </div>
+          <div className="min-w-0 lg:col-span-3">
+            <RoiForecastSection project={project} kw={debouncedKw} />
+          </div>
         </div>
-      </div>
+      </Card>
     </div>
   )
 }

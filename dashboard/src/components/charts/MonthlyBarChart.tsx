@@ -3,8 +3,9 @@
 // Functional monthly bar chart with the asas SolarResource look (gradient bars,
 // gridlines) PLUS a proper left Y-axis price scale. Always renders left-to-right
 // (dir="ltr") with the value indicator on the LEFT, regardless of the RTL app.
-// Pure CSS/SVG — every data point + label always renders.
+// Pure CSS — every data point + label always renders.
 
+import { useState } from 'react'
 import { cn } from '@/lib/utils/cn'
 
 export interface MonthlyBarDatum {
@@ -16,6 +17,8 @@ interface MonthlyBarChartProps {
   data: MonthlyBarDatum[]
   height?: number
   valueFormatter?: (n: number) => string
+  tooltipValueFormatter?: (n: number) => string
+  tooltipLabel?: string
   /** 'fat' = chunky bars (e.g. درآمد ماهانه), 'normal' = slim bars */
   barSize?: 'normal' | 'fat'
   /** Tilt x-axis labels ~45° so dense date labels stay readable under each bar */
@@ -29,10 +32,13 @@ export function MonthlyBarChart({
   data,
   height = 220,
   valueFormatter = (n) => String(n),
+  tooltipValueFormatter = valueFormatter,
+  tooltipLabel = 'مقدار',
   barSize = 'normal',
   rotateLabels = false,
   className,
 }: MonthlyBarChartProps) {
+  const [activeIndex, setActiveIndex] = useState<number | null>(null)
   const max = Math.max(...data.map((d) => d.value), 1)
 
   // Min width per column so bars + date labels stay readable on phones. When the
@@ -68,17 +74,34 @@ export function MonthlyBarChart({
               />
             ))}
 
+            {activeIndex !== null && data[activeIndex] && (
+              <div
+                dir="rtl"
+                role="tooltip"
+                className="pointer-events-none absolute top-2 z-20 max-w-[calc(100%-1rem)] min-w-32 -translate-x-1/2 rounded-md border border-border-strong bg-surface px-3 py-2 text-start shadow-[var(--shadow-md)]"
+                style={{ left: `clamp(6rem, ${((activeIndex + 0.5) / data.length) * 100}%, calc(100% - 6rem))` }}
+              >
+                <span className="block text-[11px] text-text-2">{data[activeIndex].label}</span>
+                <span className="block text-[12px] font-semibold text-text tabular-nums">
+                  {tooltipLabel}: {tooltipValueFormatter(data[activeIndex].value)}
+                </span>
+              </div>
+            )}
+
             {/* bars */}
             <div className="absolute inset-0 flex items-end justify-between gap-1.5 px-1">
               {data.map((d, i) => (
-                <div key={i} className="group/bar relative flex h-full flex-1 items-end justify-center">
-                  {/* hover value bubble */}
-                  <span className="pointer-events-none absolute -top-1 left-1/2 z-10 -translate-x-1/2 -translate-y-full whitespace-nowrap rounded bg-blue-base px-2 py-0.5 text-[10px] font-medium text-white opacity-0 transition-opacity duration-200 group-hover/bar:opacity-100 tabular-nums">
-                    {valueFormatter(d.value)}
-                  </span>
-                  <div
+                <div key={i} className="flex h-full min-w-0 flex-1 items-end justify-center">
+                  <button
+                    type="button"
+                    aria-label={`${d.label}، ${tooltipLabel}: ${tooltipValueFormatter(d.value)}`}
+                    onMouseEnter={() => setActiveIndex(i)}
+                    onMouseLeave={() => setActiveIndex(null)}
+                    onFocus={() => setActiveIndex(i)}
+                    onBlur={() => setActiveIndex(null)}
+                    onClick={() => setActiveIndex(i)}
                     className={cn(
-                      'w-full rounded-t-md bg-gradient-to-t from-[#4361ee] to-[#5DADE2] shadow-[0_0_8px_rgba(67,97,238,0.12)] transition-transform duration-300 group-hover/bar:-translate-y-1',
+                      'w-full rounded-t-md bg-gradient-to-t from-[#4361ee] to-[#5DADE2] shadow-[0_0_8px_rgba(67,97,238,0.12)] transition-[filter,transform] duration-150 hover:-translate-y-0.5 hover:brightness-110 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-base motion-reduce:transition-none',
                       barSize === 'fat' ? 'max-w-[44px]' : 'max-w-[24px]',
                     )}
                     style={{ height: `${Math.max((d.value / max) * 100, 2)}%` }}
